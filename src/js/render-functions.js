@@ -4,11 +4,11 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 let lightbox;
-
+// відображає галерею зображень на основі масиву зображень
 export function renderImages(images) {
   const gallery = document.querySelector('.gallery');
   const markup = images.map(image => createImageCard(image)).join('');
-  gallery.innerHTML = markup; //очищуємо попередній результат
+  gallery.insertAdjacentHTML('beforeend', markup);
 
   if (!lightbox) {
     lightbox = new SimpleLightbox('.gallery a');
@@ -17,6 +17,7 @@ export function renderImages(images) {
   }
 }
 
+//приймає об'єкт зображення як параметр та повертає HTML-код для картки зображення
 function createImageCard({
   webformatURL,
   largeImageURL,
@@ -39,6 +40,8 @@ function createImageCard({
       </div>
 </div>`;
 }
+
+//відображає повідомлення у вигляді сповіщення
 export function showNotification(message, type = 'info') {
   iziToast[type]({
     title: '',
@@ -47,6 +50,24 @@ export function showNotification(message, type = 'info') {
   });
 }
 
+// очищує галерею зображень
 export function clearGallery() {
   document.querySelector('.gallery').innerHTML = '';
+}
+
+//відображає індикатор завантаження
+export function showLoader() {
+  document.querySelector('.loader').classList.remove('hidden');
+}
+
+//ховає індикатор завантаження
+export function hideLoader() {
+  document.querySelector('.loader').classList.add('hidden');
+}
+
+//обчислення висоти картки галереї
+export function getCardHeight() {
+  const gallery = document.querySelector('.gallery');
+  const firstCard = gallery.querySelector('.photo-card');
+  return firstCard ? firstCard.getBoundingClientRect().height : 0;
 }
